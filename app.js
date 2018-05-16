@@ -2,10 +2,14 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const server = require('http').Server(app);
-//const gpio = require('onoff').Gpio;
+const gpio = require('onoff').Gpio;
 const socket = require('socket.io')(server);
-//const sensor = new gpio(2, 'in', 'both');
+const sensor = new gpio(2, 'in', 'both');
 
+socket.on('connection', _ => {
+	console.log('connected2');
+})
+	
 sensor.watch(function(err, val){
 	if(val == 0){
 		socket.emit('update', {occupied: true});
