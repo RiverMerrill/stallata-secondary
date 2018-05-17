@@ -8,6 +8,13 @@ const sensor = new gpio(2, 'in', 'both');
 
 socket.on('connection', _ => {
 	console.log('connected2');
+	sensor.read((err, val) => {
+		if(val == 0){
+			socket.emit('update', {occupied: true});
+		} else{
+			socket.emit('update', {occupied: false});
+		}
+	})
 })
 	
 sensor.watch(function(err, val){
@@ -17,4 +24,4 @@ sensor.watch(function(err, val){
 		socket.emit('update', {occupied: false});
 	}
 })	
-server.listen(1337, _ => console.log('listening'));
+server.listen(1337, () => console.log('listening'));
